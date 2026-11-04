@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c6452f'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='36' fill='white' font-family='serif'%3E%E6%A0%BC%3C/text%3E%3C/svg%3E" />
+  <title>格点 · 字节 LBS 高级研发面试</title>
+  <meta name="description" content="字节跳动 LBS 方向高级研发面试准备：算法、Java、Go、Python、Android、后台、推荐与 Agent。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <div class="app">
+    <div id="scrim"></div>
+    <aside class="sider" id="sider">
+      <a class="brand" href="#/">
+        <span class="brand-mark">格</span>
+        <span>
+          <strong>格点</strong>
+          <small>LBS 面试手账</small>
+        </span>
+      </a>
+      <nav id="nav"></nav>
+      <p class="sider-note">题面为训练改写。平台行为按公开文档整理，面试前再对一下最新文档。</p>
+    </aside>
+    <div class="sheet">
+      <header class="topbar">
+        <button class="icon-btn" id="menuBtn" type="button" aria-label="打开目录">目录</button>
+        <label class="search">
+          <input id="search" type="search" aria-label="搜索" placeholder="搜索坐标系、LRU、围栏、ESMM" autocomplete="off" />
+        </label>
+        <div class="meter" id="meter"></div>
+      </header>
+      <div id="searchPanel" class="search-panel" hidden></div>
+      <main id="view"></main>
+    </div>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/labs.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
