@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python solutions
+        run: python3 code/python/solutions.py
+      - name: Java solutions
+        run: |
+          javac -d /tmp/algo-java code/java/AlgoLab.java
+          java -cp /tmp/algo-java AlgoLab
+      - name: Go solutions
+        working-directory: code/go
+        run: go test ./...
+      - name: Site data matches the generators
+        run: |
+          python3 tools/build_site.py
+          git diff --exit-code -- public/js/data.js
+      - name: Site scripts parse
+        run: |
+          node --check public/js/app.js
+          node --check public/js/labs.js
+          node --check public/js/data.js
