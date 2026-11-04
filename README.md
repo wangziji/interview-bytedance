@@ -10,6 +10,8 @@ python3 -m http.server -d public 8765
 
 然后访问 `http://127.0.0.1:8765`。
 
+发布到 GitHub Pages 前，在仓库 Settings → Pages 里把 Source 选成 GitHub Actions。站点地址是 `https://wangziji.github.io/interview-bytedance/`。页面文件在 `public/`，不要选分支根目录发布。
+
 ## 里面有什么
 
 - LBS：坐标系、距离、空间索引、Geohash / S2 / H3、POI、轨迹、地图匹配、围栏、ETA、实时位置、隐私
