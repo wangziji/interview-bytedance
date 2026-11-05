@@ -288,3 +288,7 @@ QUIZ = [
         "why": "先说明单调性，再二分。这题不能打乱顺序，判定用一次顺序贪心。",
     },
 ]
+
+from quiz_more import MORE_QUIZ
+
+QUIZ.extend(MORE_QUIZ)

@@ -15,7 +15,7 @@ python3 -m http.server -d public 8765
 ## 里面有什么
 
 - LBS：坐标系、距离、空间索引、Geohash / S2 / H3、POI、轨迹、地图匹配、围栏、ETA、实时位置、隐私
-- 算法：18 道手写题，Java / Go / Python 同一组断言
+- 算法：63 道手写题，按公开的字节高频题型整理，Java / Go / Python 同一组断言
 - 语言：Java、Go、Python、Android 定位
 - 后台、本地生活推荐、Agent 工具约束
 - 四道系统设计口述、项目深挖清单、36 道自测

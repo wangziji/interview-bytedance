@@ -16,6 +16,7 @@ from problems import PROBLEMS  # noqa: E402
 from quiz import QUIZ  # noqa: E402
 from tracks_lang import ANDROID_CARDS, GO_CARDS, JAVA_CARDS, PYTHON_CARDS  # noqa: E402
 from tracks_lbs import LBS_CARDS  # noqa: E402
+from tracks_hot import HOT_CARDS  # noqa: E402
 from tracks_system import AGENT_CARDS, BACKEND_CARDS, DESIGNS, REC_CARDS  # noqa: E402
 
 
@@ -35,15 +36,23 @@ def dedent_java(snippet: str) -> str:
 
 
 def main() -> None:
-    java = {
-        key: dedent_java(value)
-        for key, value in extract(
-            ROOT / "code/java/AlgoLab.java",
-            r"/\* SNIP:(\w+) \*/\n(.*?)[ \t]*/\* END:\1 \*/",
-        ).items()
-    }
-    go = extract(ROOT / "code/go/algo.go", r"// SNIP:(\w+)\n(.*?)// END:\1")
-    python = extract(ROOT / "code/python/solutions.py", r"# SNIP:(\w+)\n(.*?)# END:\1")
+    java = {}
+    for path in sorted((ROOT / "code/java").glob("*.java")):
+        java.update({
+            key: dedent_java(value)
+            for key, value in extract(
+                path,
+                r"/\* SNIP:(\w+) \*/\n(.*?)[ \t]*/\* END:\1 \*/",
+            ).items()
+        })
+    go = {}
+    for path in sorted((ROOT / "code/go").glob("*.go")):
+        if path.name.endswith("_test.go"):
+            continue
+        go.update(extract(path, r"// SNIP:(\w+)\n(.*?)// END:\1"))
+    python = {}
+    for path in sorted((ROOT / "code/python").glob("*.py")):
+        python.update(extract(path, r"# SNIP:(\w+)\n(.*?)# END:\1"))
 
     problems = []
     for problem in PROBLEMS:
@@ -61,6 +70,12 @@ def main() -> None:
             "title": "LBS 领域",
             "blurb": "坐标系、索引、轨迹、围栏、路径。这是 LBS 岗和通用后台岗的分界。",
             "cards": LBS_CARDS,
+        },
+        {
+            "id": "hot",
+            "title": "高频追问",
+            "blurb": "3-1、3-2 会从面经里的这些点追到实现和取舍：MySQL、Redis、Kafka、限流、一致性、网络。",
+            "cards": HOT_CARDS,
         },
         {
             "id": "java",
