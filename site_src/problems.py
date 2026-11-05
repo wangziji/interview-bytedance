@@ -300,3 +300,7 @@ PROBLEMS = [
         "follow": ["这是「最大化最小值 / 最小化最大值」模板，先讲单调性再写代码", "若可以打乱顺序，问题性质变了，要重新证明贪心", "业务里把 cap 换成骑手班次能承接的单量，判定函数换成仿真或贪心分配"],
     },
 ]
+
+from problems_more import MORE_PROBLEMS
+
+PROBLEMS.extend(MORE_PROBLEMS)

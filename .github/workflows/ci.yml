@@ -12,11 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Python solutions
-        run: python3 code/python/solutions.py
+        run: |
+          python3 code/python/solutions.py
+          python3 code/python/more.py
       - name: Java solutions
         run: |
-          javac -d /tmp/algo-java code/java/AlgoLab.java
+          javac -d /tmp/algo-java code/java/AlgoLab.java code/java/MoreLab.java
           java -cp /tmp/algo-java AlgoLab
+          java -cp /tmp/algo-java MoreLab
       - name: Go solutions
         working-directory: code/go
         run: go test ./...

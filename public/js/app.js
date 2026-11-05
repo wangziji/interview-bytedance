@@ -225,7 +225,7 @@
     view.innerHTML = `
       <p class="kicker">手写</p>
       <h2>算法题</h2>
-      <p class="muted">十八道题都有 Java、Go、Python 实现，并且三份代码过了同一组断言。先自己写，再打开题解。地理题旁边写了它在工程里哪里失效。</p>
+      <p class="muted">按公开面经里反复出现的字节题型整理，覆盖 3-1、3-2 仍会手写的链表、树、二分、堆、动态规划和地理题。每题都有 Java、Go、Python，三份代码过同一组断言。题面是训练改写，不是原题照抄。先写再对答案。</p>
       <div class="toolbar" id="filters">
         ${["全部", "简单", "中等", "困难", "LBS", "高频"].map((name) => `<button class="btn" data-filter="${esc(name)}" type="button">${esc(name)}</button>`).join("")}
       </div>

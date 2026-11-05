@@ -65,17 +65,32 @@ a { color: inherit; }
 }
 .brand strong { display: block; font-family: var(--display); font-size: 28px; font-weight: 400; letter-spacing: 0.04em; }
 .brand small { color: rgba(244, 239, 228, 0.72); }
-.nav-group { margin: 16px 0 6px; color: rgba(244, 239, 228, 0.46); font-size: 12px; letter-spacing: 0.14em; }
-.nav a {
+#nav {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.nav-group {
   display: block;
+  width: 100%;
+  margin: 16px 0 6px;
+  color: rgba(244, 239, 228, 0.46);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+#nav a {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   text-decoration: none;
   padding: 8px 10px;
-  margin: 2px 0;
+  margin: 0 0 2px;
   border-radius: 8px;
   color: rgba(244, 239, 228, 0.88);
   line-height: 1.35;
+  white-space: normal;
 }
-.nav a.active, .nav a:hover { background: rgba(255, 255, 255, 0.08); color: white; }
+#nav a.active, #nav a:hover { background: rgba(255, 255, 255, 0.08); color: white; }
 .sider-note { margin-top: 28px; color: rgba(244, 239, 228, 0.55); font-size: 12px; }
 
 .sheet { flex: 1; min-width: 0; }
