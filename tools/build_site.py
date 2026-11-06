@@ -15,10 +15,12 @@ from meta import HOME, PLAN, PROJECT  # noqa: E402
 from problems import PROBLEMS  # noqa: E402
 from quiz import QUIZ  # noqa: E402
 from tracks_lang import ANDROID_CARDS, GO_CARDS, JAVA_CARDS, PYTHON_CARDS  # noqa: E402
+from tracks_more import BACKEND_MORE, ES_CARDS, GO_MORE, MYSQL_CARDS, REDIS_CARDS  # noqa: E402
 from tracks_lbs import LBS_CARDS  # noqa: E402
 from tracks_hot import HOT_CARDS  # noqa: E402
 from tracks_system import AGENT_CARDS, BACKEND_CARDS, DESIGNS, REC_CARDS  # noqa: E402
 from walks_lbs import LBS_WALKS  # noqa: E402
+from walks_more import MORE_WALKS  # noqa: E402
 from walks_rest import REST_WALKS  # noqa: E402
 
 
@@ -56,7 +58,7 @@ def main() -> None:
     for path in sorted((ROOT / "code/python").glob("*.py")):
         python.update(extract(path, r"# SNIP:(\w+)\n(.*?)# END:\1"))
 
-    walks = {**LBS_WALKS, **REST_WALKS}
+    walks = {**LBS_WALKS, **REST_WALKS, **MORE_WALKS}
 
     def with_walks(track_id, cards):
         attached = []
@@ -101,8 +103,8 @@ def main() -> None:
         {
             "id": "go",
             "title": "Go",
-            "blurb": "调度、channel、错误和进程内合并请求。适合高连接数的位置网关。",
-            "cards": with_walks("go", GO_CARDS),
+            "blurb": "调度、channel、错误、退出和超时。位置网关用有界队列，不靠无界 goroutine。",
+            "cards": with_walks("go", GO_CARDS + GO_MORE),
         },
         {
             "id": "python",
@@ -119,8 +121,26 @@ def main() -> None:
         {
             "id": "backend",
             "title": "后台开发",
-            "blurb": "容量、Redis GEO、分片热点、轨迹管道和幂等。",
-            "cards": with_walks("backend", BACKEND_CARDS),
+            "blurb": "容量、分片、超时预算、发件箱、背压和降级。",
+            "cards": with_walks("backend", BACKEND_CARDS + BACKEND_MORE),
+        },
+        {
+            "id": "mysql",
+            "title": "MySQL",
+            "blurb": "执行计划、覆盖索引、间隙锁、死锁、主从延迟、binlog 和版本更新。",
+            "cards": with_walks("mysql", MYSQL_CARDS),
+        },
+        {
+            "id": "redis",
+            "title": "Redis",
+            "blurb": "大 key、穿透击穿、管道和 Lua、淘汰、集群槽位、GEO 误差。",
+            "cards": with_walks("redis", REDIS_CARDS),
+        },
+        {
+            "id": "es",
+            "title": "Elasticsearch",
+            "blurb": "text 与 keyword、倒排、过滤、地理字段、刷新、深分页和批量版本。",
+            "cards": with_walks("es", ES_CARDS),
         },
         {
             "id": "rec",

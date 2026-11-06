@@ -290,5 +290,7 @@ QUIZ = [
 ]
 
 from quiz_more import MORE_QUIZ
+from quiz_store import STORE_QUIZ
 
 QUIZ.extend(MORE_QUIZ)
+QUIZ.extend(STORE_QUIZ)
