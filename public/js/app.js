@@ -195,6 +195,29 @@
     `;
   }
 
+  function walkHtml(walks) {
+    if (!walks || !walks.length) return "";
+    return `<section class="walks"><h3>逐行看代码</h3><p class="muted">按执行顺序拆开。先看这几行在算什么，再看下一截。把这些小段按顺序拼起来就是完整实现。</p>${walks
+      .map(
+        (walk) => `<article class="walk">
+          <header><b>${esc(walk.title)}</b>${walk.lang ? `<span class="tag">${esc(walk.lang)}</span>` : ""}</header>
+          ${walk.intro ? `<p>${esc(walk.intro)}</p>` : ""}
+          <ol class="walk-steps">
+            ${walk.steps
+              .map(
+                (step, index) => `<li>
+                  <span class="step-no">${index + 1}</span>
+                  <pre><code>${esc(step.code)}</code></pre>
+                  <p>${esc(step.say)}</p>
+                </li>`,
+              )
+              .join("")}
+          </ol>
+        </article>`,
+      )
+      .join("")}</section>`;
+  }
+
   function renderCard(trackId, cardId) {
     const track = tracks[trackId];
     const card = track && track.cards.find((item) => item.id === cardId);
@@ -211,6 +234,7 @@
       </div>
       <div class="speech"><b>可以这样开口</b><p>${esc(card.speech)}</p></div>
       ${blocksHtml(card.blocks)}
+      ${walkHtml(card.walks)}
       ${card.code ? `<h3>${esc(card.code.lang)}</h3>${codeBlock(card.code.text)}` : ""}
       <div class="split">
         <section class="pitfall"><h3>容易说错</h3><ul>${(card.pitfalls || []).map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>
@@ -518,7 +542,7 @@
           href: `#/card/${track.id}/${card.id}`,
           kind: track.title,
           title: card.title,
-          text: `${card.title} ${card.lead} ${card.speech} ${(card.pitfalls || []).join(" ")}`,
+          text: `${card.title} ${card.lead} ${card.speech} ${(card.pitfalls || []).join(" ")} ${(card.walks || []).map((walk) => walk.steps.map((step) => step.say).join(" ")).join(" ")}`,
         });
       });
     });
