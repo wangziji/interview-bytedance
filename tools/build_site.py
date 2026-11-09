@@ -17,9 +17,11 @@ from quiz import QUIZ  # noqa: E402
 from tracks_lang import ANDROID_CARDS, GO_CARDS, JAVA_CARDS, PYTHON_CARDS  # noqa: E402
 from tracks_more import BACKEND_MORE, ES_CARDS, GO_MORE, MYSQL_CARDS, REDIS_CARDS  # noqa: E402
 from tracks_lbs import LBS_CARDS  # noqa: E402
+from tracks_resume import RESUME_CARDS  # noqa: E402
 from tracks_hot import HOT_CARDS  # noqa: E402
 from tracks_system import AGENT_CARDS, BACKEND_CARDS, DESIGNS, REC_CARDS  # noqa: E402
 from walks_lbs import LBS_WALKS  # noqa: E402
+from walks_resume import RESUME_WALKS  # noqa: E402
 from walks_more import MORE_WALKS  # noqa: E402
 from walks_rest import REST_WALKS  # noqa: E402
 
@@ -58,7 +60,7 @@ def main() -> None:
     for path in sorted((ROOT / "code/python").glob("*.py")):
         python.update(extract(path, r"# SNIP:(\w+)\n(.*?)# END:\1"))
 
-    walks = {**LBS_WALKS, **REST_WALKS, **MORE_WALKS}
+    walks = {**LBS_WALKS, **REST_WALKS, **MORE_WALKS, **RESUME_WALKS}
 
     def with_walks(track_id, cards):
         attached = []
@@ -82,6 +84,12 @@ def main() -> None:
         problems.append(item)
 
     tracks = [
+        {
+            "id": "resume",
+            "title": "简历追问",
+            "blurb": "按简历里的项目准备追问：猜你想去、酒店排序与补贴、Agent、网关加密、车机地图和全景。数字先对口径。",
+            "cards": with_walks("resume", RESUME_CARDS),
+        },
         {
             "id": "lbs",
             "title": "LBS 领域",
