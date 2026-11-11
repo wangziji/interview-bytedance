@@ -135,6 +135,23 @@
     });
   }
 
+  function paras(text) {
+    return String(text ?? "")
+      .split(/\n\n+/)
+      .filter((part) => part.trim())
+      .map((part) => `<p>${esc(part.trim())}</p>`)
+      .join("");
+  }
+
+  function primerHtml(primer) {
+    if (!primer) return "";
+    return `<section class="primer">
+      <article><h3>背景</h3>${paras(primer.context)}</article>
+      <article><h3>原理</h3>${paras(primer.principle)}</article>
+      <article><h3>重点考察</h3><ul>${(primer.focus || []).map((item) => `<li>${esc(item)}</li>`).join("")}</ul></article>
+    </section>`;
+  }
+
   function blocksHtml(blocks) {
     return (blocks || [])
       .map(
@@ -273,7 +290,8 @@
         <button class="btn" id="speakTimer" type="button">口述计时 70 秒</button>
         <span class="timer" id="clock"></span>
       </div>
-      <div class="speech"><b>可以这样开口</b><p>${esc(card.speech)}</p></div>
+      ${primerHtml(card.primer)}
+      <div class="speech"><b>收成一段口述</b><p>${esc(card.speech)}</p></div>
       ${blocksHtml(card.blocks)}
       ${walkHtml(card.walks)}
       ${card.code ? `<h3>${esc(card.code.lang)}</h3>${codeBlock(card.code.text)}` : ""}
@@ -585,7 +603,7 @@
           href: `#/card/${track.id}/${card.id}`,
           kind: track.title,
           title: card.title,
-          text: `${card.title} ${card.lead} ${card.speech} ${(card.pitfalls || []).join(" ")} ${(card.walks || []).map((walk) => walk.steps.map((step) => step.say).join(" ")).join(" ")}`,
+          text: `${card.title} ${card.lead} ${card.speech} ${card.primer ? `${card.primer.context} ${card.primer.principle} ${(card.primer.focus || []).join(" ")}` : ""} ${(card.pitfalls || []).join(" ")} ${(card.walks || []).map((walk) => walk.steps.map((step) => step.say).join(" ")).join(" ")}`,
         });
       });
     });
