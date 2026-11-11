@@ -16,6 +16,7 @@ def figure_ids() -> set[str]:
     text = (ROOT / "public/js/figures.js").read_text(encoding="utf-8")
     return set(re.findall(r"^    ([a-z0-9-]+): \{", text, re.M))
 
+from leetcode import LEETCODE, NO_LEETCODE  # noqa: E402
 from meta import HOME, PLAN, PROJECT  # noqa: E402
 from problems import PROBLEMS  # noqa: E402
 from quiz import QUIZ  # noqa: E402
@@ -122,6 +123,17 @@ def main() -> None:
             raise SystemExit(f"{snip} missing in {missing}")
         item = dict(problem)
         item["code"] = {"Java": java[snip], "Go": go[snip], "Python": python[snip]}
+        lc = LEETCODE.get(problem["id"])
+        if lc:
+            number, slug, name, note = lc
+            item["leetcode"] = {
+                "no": number,
+                "name": name,
+                "url": f"https://leetcode.cn/problems/{slug}/",
+                "note": note,
+            }
+        elif problem["id"] not in NO_LEETCODE:
+            raise SystemExit(f"{problem['id']} has no LeetCode mapping")
         problems.append(item)
 
     tracks = [

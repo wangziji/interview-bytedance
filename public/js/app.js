@@ -169,6 +169,17 @@
     </section>`;
   }
 
+  function leetcodeHtml(problem) {
+    const lc = problem.leetcode;
+    if (!lc) return `<p class="muted">这题是面试手写，没有一一对应的力扣原题。</p>`;
+    const note = lc.note ? `<span class="lc-note">${esc(lc.note)}</span>` : "";
+    return `<p class="lc-link"><a href="${esc(lc.url)}" target="_blank" rel="noopener noreferrer">力扣 ${lc.no}. ${esc(lc.name)}</a>${note}</p>`;
+  }
+
+  function lcMark(problem) {
+    return problem.leetcode ? ` · 力扣 ${problem.leetcode.no}` : "";
+  }
+
   function blocksHtml(blocks) {
     return (blocks || [])
       .map(
@@ -216,7 +227,7 @@
           .slice(0, 6)
           .map(
             (problem) => `<a class="row-link" href="#/problem/${problem.id}">
-              <span><b>${esc(problem.title)}</b><br /><span class="muted">${esc(problem.tags.join(" · "))}</span></span>
+              <span><b>${esc(problem.title)}</b><br /><span class="muted">${esc(problem.tags.join(" · "))}${lcMark(problem)}</span></span>
               <span class="badge ${diffClass(problem.diff)}">${esc(problem.diff)}</span>
             </a>`,
           )
@@ -342,7 +353,7 @@
         })
         .map(
           (problem) => `<a class="row-link${mastered().has(problem.id) ? " done" : ""}" href="#/problem/${problem.id}">
-            <span><b>${esc(problem.title)}</b><br /><span class="muted">${problem.tags.map(esc).join(" · ")} · ${problem.mins} 分钟</span></span>
+            <span><b>${esc(problem.title)}</b><br /><span class="muted">${problem.tags.map(esc).join(" · ")} · ${problem.mins} 分钟${lcMark(problem)}</span></span>
             <span class="row-marks">${masteredMark(problem.id)}<span class="badge ${diffClass(problem.diff)}">${esc(problem.diff)}</span></span>
           </a>`,
         )
@@ -367,6 +378,7 @@
       <p class="kicker">${esc(problem.diff)} · 建议 ${problem.mins} 分钟</p>
       <h2>${esc(problem.title)}</h2>
       <div class="tags">${problem.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join("")}</div>
+      ${leetcodeHtml(problem)}
       <p>${esc(problem.prompt)}</p>
       ${problem.examples
         .map((example) => `<p class="example">输入 ${esc(example.in)}<br />输出 ${esc(example.out)}</p>`)
@@ -629,7 +641,7 @@
         href: `#/problem/${problem.id}`,
         kind: "算法",
         title: problem.title,
-        text: `${problem.title} ${problem.prompt} ${problem.tags.join(" ")}`,
+        text: `${problem.title} ${problem.prompt} ${problem.tags.join(" ")} ${problem.leetcode ? `${problem.leetcode.no} ${problem.leetcode.name}` : ""}`,
       });
     });
     SITE.designs.forEach((design) => {

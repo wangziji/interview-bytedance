@@ -296,7 +296,9 @@ pre {
   line-height: 1.55;
 }
 code { font-family: var(--mono); }
-.example { font-family: var(--mono); font-size: 13px; background: #f6f1e6; padding: 8px 10px; border-radius: 10px; }
+.lc-link { margin: 10px 0 0; }
+.lc-link a { color: var(--pine-2); font-weight: 700; }
+.lc-note { display: block; margin-top: 4px; color: var(--muted); font-weight: 400; }
 .timer { font-variant-numeric: tabular-nums; font-family: var(--mono); }
 
 .quiz-option {
