@@ -201,6 +201,18 @@ h2 { font-size: 28px; margin: 0 0 8px; }
 .progress-line { margin: 0 0 12px; color: var(--muted); }
 .progress-line b { color: var(--pine); font-variant-numeric: tabular-nums; }
 
+.primer { display: grid; gap: 12px; margin: 8px 0 16px; }
+.primer article {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+.primer h3 { margin: 0 0 8px; font-size: 22px; }
+.primer p { margin: 0 0 10px; }
+.primer p:last-child { margin-bottom: 0; }
+.primer ul { margin: 0; padding-left: 1.2em; }
+.primer li + li { margin-top: 6px; }
 .speech {
   background: #f7f1e4;
   border-left: 4px solid var(--pin);
