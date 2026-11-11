@@ -11,6 +11,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "site_src"))
 
+
+def figure_ids() -> set[str]:
+    text = (ROOT / "public/js/figures.js").read_text(encoding="utf-8")
+    return set(re.findall(r"^    ([a-z0-9-]+): \{", text, re.M))
+
 from meta import HOME, PLAN, PROJECT  # noqa: E402
 from problems import PROBLEMS  # noqa: E402
 from quiz import QUIZ  # noqa: E402
@@ -20,6 +25,8 @@ from tracks_lbs import LBS_CARDS  # noqa: E402
 from tracks_resume import RESUME_CARDS  # noqa: E402
 from tracks_hot import HOT_CARDS  # noqa: E402
 from tracks_system import AGENT_CARDS, BACKEND_CARDS, DESIGNS, REC_CARDS  # noqa: E402
+from answers import ANSWERS  # noqa: E402
+from figure_map import FIGURE_OF  # noqa: E402
 from primers import PRIMERS  # noqa: E402
 from walks_lbs import LBS_WALKS  # noqa: E402
 from walks_resume import RESUME_WALKS  # noqa: E402
@@ -84,10 +91,26 @@ def main() -> None:
             context = (primer.get("context") or "").strip()
             principle = (primer.get("principle") or "").strip()
             focus = primer.get("focus") or []
+            answers = ANSWERS.get(key) or []
             if len(context) < 80 or len(principle) < 160 or len(focus) < 4:
                 raise SystemExit(f"primer too thin for {key}")
+            if len(answers) != len(focus):
+                raise SystemExit(f"{key} has {len(focus)} focus points and {len(answers)} answers")
+            points = []
+            for question, answer in zip(focus, answers):
+                answer = (answer or "").strip()
+                if len(answer) < 40:
+                    raise SystemExit(f"answer too thin for {key}: {question}")
+                points.append({"q": question, "a": answer})
+            figure = FIGURE_OF.get(key)
+            if figure:
+                known = figure_ids()
+                if figure not in known:
+                    raise SystemExit(f"unknown figure {figure} for {key}")
             item = dict(card)
-            item["primer"] = {"context": context, "principle": principle, "focus": list(focus)}
+            item["primer"] = {"context": context, "principle": principle, "focus": points}
+            if figure:
+                item["primer"]["figure"] = figure
             attached.append(item)
         return attached
 

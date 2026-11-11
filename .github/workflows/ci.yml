@@ -31,6 +31,7 @@ jobs:
         run: |
           node --check public/js/app.js
           node --check public/js/labs.js
+          node --check public/js/figures.js
           node --check public/js/data.js
 
   pages-enabled:

@@ -213,6 +213,20 @@ h2 { font-size: 28px; margin: 0 0 8px; }
 .primer p:last-child { margin-bottom: 0; }
 .primer ul { margin: 0; padding-left: 1.2em; }
 .primer li + li { margin-top: 6px; }
+.focus-list { list-style: none; margin: 0; padding: 0; }
+.focus-list li { padding: 12px 0; border-top: 1px solid var(--line); }
+.focus-list li:first-child { border-top: 0; padding-top: 0; }
+.focus-q { margin: 0 0 6px; font-weight: 700; }
+.focus-a { margin: 0; }
+.diagram {
+  margin: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 12px 10px;
+}
+.diagram svg { width: 100%; max-width: 720px; height: auto; display: block; }
+.diagram figcaption { margin: 8px 4px 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
 .speech {
   background: #f7f1e4;
   border-left: 4px solid var(--pin);
