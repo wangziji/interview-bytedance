@@ -79,7 +79,10 @@ a { color: inherit; }
   letter-spacing: 0.14em;
 }
 #nav a {
-  display: block;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
   width: 100%;
   box-sizing: border-box;
   text-decoration: none;
@@ -90,6 +93,15 @@ a { color: inherit; }
   line-height: 1.35;
   white-space: normal;
 }
+#nav a .nav-label { min-width: 0; }
+#nav a .nav-count {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(244, 239, 228, 0.62);
+}
+#nav a .nav-count.full { color: #b7e4c7; }
 #nav a.active, #nav a:hover { background: rgba(255, 255, 255, 0.08); color: white; }
 .sider-note { margin-top: 28px; color: rgba(244, 239, 228, 0.55); font-size: 12px; }
 
@@ -183,6 +195,11 @@ h2 { font-size: 28px; margin: 0 0 8px; }
 .badge.mid { background: #f8efd4; color: var(--gold); }
 .badge.hard { background: #fde8e2; color: var(--pin); }
 .badge.level { background: var(--pine); color: white; }
+.badge.pending { background: #efe6d4; color: var(--muted); }
+.row-marks { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: none; }
+.row-link.done { background: #f3f8f4; }
+.progress-line { margin: 0 0 12px; color: var(--muted); }
+.progress-line b { color: var(--pine); font-variant-numeric: tabular-nums; }
 
 .speech {
   background: #f7f1e4;

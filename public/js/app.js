@@ -33,6 +33,34 @@
   function setMastered(set) {
     localStorage.setItem(KEY, JSON.stringify([...set]));
     renderMeter();
+    renderNav(navTarget(currentParts()));
+  }
+
+  function currentParts() {
+    return (location.hash.replace(/^#/, "") || "/").split("/").filter(Boolean);
+  }
+
+  function countDone(ids) {
+    const set = mastered();
+    return ids.reduce((sum, id) => sum + (set.has(id) ? 1 : 0), 0);
+  }
+
+  function progressForHref(href) {
+    if (href.startsWith("/track/")) {
+      const track = tracks[href.slice("/track/".length)];
+      if (!track) return null;
+      const ids = track.cards.map((card) => card.id);
+      return { done: countDone(ids), total: ids.length };
+    }
+    if (href === "/problems") {
+      const ids = SITE.problems.map((problem) => problem.id);
+      return { done: countDone(ids), total: ids.length };
+    }
+    if (href === "/designs") {
+      const ids = SITE.designs.map((design) => design.id);
+      return { done: countDone(ids), total: ids.length };
+    }
+    return null;
   }
 
   function allIds() {
@@ -77,7 +105,12 @@
         links
           .map(([href, label]) => {
             const active = path === href || (href !== "/" && path.startsWith(href));
-            return `<a href="#${href}" class="${active ? "active" : ""}">${esc(label)}</a>`;
+            const progress = progressForHref(href);
+            const full = progress && progress.total > 0 && progress.done === progress.total;
+            const count = progress
+              ? `<span class="nav-count${full ? " full" : ""}">${progress.done}/${progress.total}</span>`
+              : "";
+            return `<a href="#${href}" class="${active ? "active" : ""}"><span class="nav-label">${esc(label)}</span>${count}</a>`;
           })
           .join(""),
     ).join("");
@@ -175,19 +208,27 @@
     `;
   }
 
+  function masteredMark(id) {
+    return mastered().has(id)
+      ? `<span class="badge easy">已掌握</span>`
+      : `<span class="badge pending">未掌握</span>`;
+  }
+
   function renderTrack(id) {
     const track = tracks[id];
     if (!track) return renderMissing();
+    const done = countDone(track.cards.map((card) => card.id));
     view.innerHTML = `
       <p class="kicker">专题</p>
       <h2>${esc(track.title)}</h2>
       <p class="lede">${esc(track.blurb)}</p>
+      <p class="progress-line">已掌握 <b>${done}/${track.cards.length}</b></p>
       <div class="list">
         ${track.cards
           .map(
-            (card) => `<a class="row-link" href="#/card/${track.id}/${card.id}">
+            (card) => `<a class="row-link${mastered().has(card.id) ? " done" : ""}" href="#/card/${track.id}/${card.id}">
               <span><b>${esc(card.title)}</b><br /><span class="muted">${esc(card.lead)}</span></span>
-              <span class="badge level">${esc(card.level)}</span>
+              <span class="row-marks">${masteredMark(card.id)}<span class="badge level">${esc(card.level)}</span></span>
             </a>`,
           )
           .join("")}
@@ -250,6 +291,7 @@
       <p class="kicker">手写</p>
       <h2>算法题</h2>
       <p class="muted">按公开面经里反复出现的字节题型整理，覆盖 3-1、3-2 仍会手写的链表、树、二分、堆、动态规划和地理题。每题都有 Java、Go、Python，三份代码过同一组断言。题面是训练改写，不是原题照抄。先写再对答案。</p>
+      <p class="progress-line">已掌握 <b>${countDone(SITE.problems.map((problem) => problem.id))}/${SITE.problems.length}</b></p>
       <div class="toolbar" id="filters">
         ${["全部", "简单", "中等", "困难", "LBS", "高频"].map((name) => `<button class="btn" data-filter="${esc(name)}" type="button">${esc(name)}</button>`).join("")}
       </div>
@@ -264,9 +306,9 @@
           return problem.diff === filter;
         })
         .map(
-          (problem) => `<a class="row-link" href="#/problem/${problem.id}">
+          (problem) => `<a class="row-link${mastered().has(problem.id) ? " done" : ""}" href="#/problem/${problem.id}">
             <span><b>${esc(problem.title)}</b><br /><span class="muted">${problem.tags.map(esc).join(" · ")} · ${problem.mins} 分钟</span></span>
-            <span class="badge ${diffClass(problem.diff)}">${esc(problem.diff)}</span>
+            <span class="row-marks">${masteredMark(problem.id)}<span class="badge ${diffClass(problem.diff)}">${esc(problem.diff)}</span></span>
           </a>`,
         )
         .join("");
@@ -358,12 +400,13 @@
       <p class="kicker">口述</p>
       <h2>四道系统设计</h2>
       <p class="muted">每道都按澄清、容量、接口、结构、数据和故障来排。数字来自页面里的假设，面试官改假设时只替换一项。</p>
+      <p class="progress-line">已掌握 <b>${countDone(SITE.designs.map((design) => design.id))}/${SITE.designs.length}</b></p>
       <div class="list">
         ${SITE.designs
           .map(
-            (design) => `<a class="row-link" href="#/design/${design.id}">
+            (design) => `<a class="row-link${mastered().has(design.id) ? " done" : ""}" href="#/design/${design.id}">
               <span><b>${esc(design.title)}</b><br /><span class="muted">${esc(design.summary)}</span></span>
-              <span class="badge">${design.mins} 分钟</span>
+              <span class="row-marks">${masteredMark(design.id)}<span class="badge">${design.mins} 分钟</span></span>
             </a>`,
           )
           .join("")}
