@@ -143,12 +143,29 @@
       .join("");
   }
 
+  function figureHtml(id) {
+    const fig = id && window.FIGURES && window.FIGURES[id];
+    if (!fig) return "";
+    return `<figure class="diagram">${fig.svg}<figcaption>${esc(fig.caption)}</figcaption></figure>`;
+  }
+
+  function focusHtml(focus) {
+    return `<ol class="focus-list">${(focus || [])
+      .map((item) => {
+        const question = typeof item === "string" ? item : item.q;
+        const answer = typeof item === "string" ? "" : item.a;
+        return `<li><p class="focus-q">${esc(question)}</p>${answer ? `<p class="focus-a">${esc(answer)}</p>` : ""}</li>`;
+      })
+      .join("")}</ol>`;
+  }
+
   function primerHtml(primer) {
     if (!primer) return "";
     return `<section class="primer">
       <article><h3>背景</h3>${paras(primer.context)}</article>
+      ${figureHtml(primer.figure)}
       <article><h3>原理</h3>${paras(primer.principle)}</article>
-      <article><h3>重点考察</h3><ul>${(primer.focus || []).map((item) => `<li>${esc(item)}</li>`).join("")}</ul></article>
+      <article><h3>重点考察</h3>${focusHtml(primer.focus)}</article>
     </section>`;
   }
 
@@ -603,7 +620,7 @@
           href: `#/card/${track.id}/${card.id}`,
           kind: track.title,
           title: card.title,
-          text: `${card.title} ${card.lead} ${card.speech} ${card.primer ? `${card.primer.context} ${card.primer.principle} ${(card.primer.focus || []).join(" ")}` : ""} ${(card.pitfalls || []).join(" ")} ${(card.walks || []).map((walk) => walk.steps.map((step) => step.say).join(" ")).join(" ")}`,
+          text: `${card.title} ${card.lead} ${card.speech} ${card.primer ? `${card.primer.context} ${card.primer.principle} ${(card.primer.focus || []).map((item) => (typeof item === "string" ? item : `${item.q} ${item.a}`)).join(" ")}` : ""} ${(card.pitfalls || []).join(" ")} ${(card.walks || []).map((walk) => walk.steps.map((step) => step.say).join(" ")).join(" ")}`,
         });
       });
     });
